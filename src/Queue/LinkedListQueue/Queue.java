@@ -1,5 +1,7 @@
 package Queue.LinkedListQueue;
-
+/*
+ * Phần này dữ liệu đang dùng tạm là Integer, Hãy sửa lại theo như đề bài bằng các đối tượng như Student, Animal, Car, ... 
+ */
 class Node {
     Integer data;
     Node next;

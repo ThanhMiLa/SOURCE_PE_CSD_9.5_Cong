@@ -1,5 +1,9 @@
 package Tree.AVL_Tree;
 
+/**
+ * Source này hiện tại đang dùng kiểu dữ liệu đói tượng Student, mọi người copy paste hãy thay đổi Student thành kiểu dữ liệu mà đề bài yêu cầu
+ * Tìm hiểu thêm cách cài đặt hàm compareTo() vì ở đây compareTo() theo mẫu là so sánh gpa là kiểu double, tìm hiểu thêm cách so sánh theo Integer hay String
+ */
 class Student {
     private String ID;
     private String name;
@@ -64,6 +68,7 @@ class Node {
 }
 
 class AVLTree {
+    /* ============== Từ đây đến hàm rightRotation bắt buột phải có trong AVL Tree ==============*/
     Node root;
 
     public boolean isEmpty() {
@@ -105,7 +110,10 @@ class AVLTree {
         returnNode.right = root;
         return returnNode;
     }
+    /* ============ Là đến đây ============*/
 
+
+    /* ================  INSERT ================*/
     public void insert(Student value) {
         root = insert(root, value);
     }
@@ -146,6 +154,7 @@ class AVLTree {
         return root;
     }
 
+    /* ================  REMOVE ================*/
     /* Ở hàm remove đầu tiên sẻ phải tìm kiếm Student theo tiêu tí nào đó bằng 3 cách search ở bên dưới 
      * Với ví dụ này là tìm kiếm theo name nên truyền vào là String name, tùy đề bài mà sử dụng
     */
@@ -200,8 +209,8 @@ class AVLTree {
         return root.data;
     }
 
-    // ======= Các hàm search  bằng 3 cách duyệt, tùy đề bài mà sử dụng, đề bài có thể nói tìm kiếm theo ID hoặc name hoặc ... =======
-    
+    /* ================  SEARCH ================*/
+    /* Các hàm search  bằng 3 cách duyệt, tùy đề bài mà sử dụng, đề bài có thể nói tìm kiếm theo ID hoặc name hoặc ... */
     /* Search Theo InOrder */
     public Node searchByNameInOrder(String name) {
         return searchByNameInOrder(root, name);
@@ -266,7 +275,7 @@ class AVLTree {
         return null;
     }
 
-    /* Duyệt cây để test, tùy đề bài bắt duyệt theo kiểu gì, ở phần BST_Tree có đầy đủ 3 cách duyệt, ở đây lấy ví dụ cách duyệt inOrder */
+    /* ======= Duyệt cây để test, tùy đề bài bắt duyệt theo kiểu gì, ở phần BST_Tree có đầy đủ 3 cách duyệt, ở đây lấy ví dụ cách duyệt inOrder =======*/
     public void inOrder() {
         inOrder(root);
     }
@@ -288,8 +297,8 @@ public class Tree {
         tree.insert(new Student("3", "C", 3.9));
         tree.insert(new Student("4", "D", 3.6));
         tree.insert(new Student("5", "E", 2.0));
-        tree.insert(new Student("5", "E", 1.0));
-        tree.insert(new Student("5", "E", 0.5));
+        tree.insert(new Student("5", "F", 1.0));
+        tree.insert(new Student("5", "G", 0.5));
         tree.remove("E");
         tree.inOrder();
         System.out.println(tree.isBalanceTree());

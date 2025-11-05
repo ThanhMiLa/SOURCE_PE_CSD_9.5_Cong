@@ -1,5 +1,7 @@
 package Sort;
-
+/*
+ * Phần này dữ liệu đang dùng tạm là Integer, Hãy sửa lại theo như đề bài bằng các đối tượng như Student, Animal, Car, ... 
+ */
 public class BubbleSort {
     public static void bubbleSort(int[] a){
         for (int i = 0; i < a.length - 1; i++) {

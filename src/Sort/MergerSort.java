@@ -1,5 +1,7 @@
 package Sort;
-
+/*
+ * Phần này dữ liệu đang dùng tạm là Integer, Hãy sửa lại theo như đề bài bằng các đối tượng như Student, Animal, Car, ... 
+ */
 public class MergerSort {
     static void merge(int[] array, int left, int mid, int right){
         int n1 = mid - left + 1;
