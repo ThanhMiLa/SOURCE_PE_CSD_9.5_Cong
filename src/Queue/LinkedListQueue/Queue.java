@@ -57,7 +57,7 @@ public class Queue {
         queue.enqueue(9);
         queue.dequeue();
         queue.dequeue();
-         queue.enqueue(10);
+        queue.enqueue(10);
         queue.display();
     }
 }
