@@ -1,8 +1,13 @@
 package Heap;
+
 /**
- * Source này hiện tại đang dùng kiểu dữ liệu đói tượng Student, mọi người copy paste hãy thay đổi Student thành kiểu dữ liệu mà đề bài yêu cầu
- * Nhớ phải vào insert code để Implement equal vs hashCode, tự thêm getter vs setter nếu đề bài yêu cầu, 
- * Tìm hiểu thêm cách cài đặt hàm compareTo() vì ở đây compareTo() theo mẫu là so sánh gpa là kiểu double, tìm hiểu thêm cách so sánh theo Integer hay String
+ * Source này hiện tại đang dùng kiểu dữ liệu đói tượng Student, mọi người copy
+ * paste hãy thay đổi Student thành kiểu dữ liệu mà đề bài yêu cầu
+ * Nhớ phải vào insert code để Implement equal vs hashCode, tự thêm getter vs
+ * setter nếu đề bài yêu cầu,
+ * Tìm hiểu thêm cách cài đặt hàm compareTo() vì ở đây compareTo() theo mẫu là
+ * so sánh gpa là kiểu double, tìm hiểu thêm cách so sánh theo Integer hay
+ * String
  */
 class Student implements Comparable<Student> {
     private String ID;
@@ -67,7 +72,8 @@ public class MinHeap {
         data = new Student[size];
     }
 
-    public boolean add(Student value) {
+    /* ============================ INSEART ============================= */
+    public boolean insert(Student value) {
         if (currentSize == maxSize)
             return false;
         data[currentSize] = value;
@@ -76,27 +82,35 @@ public class MinHeap {
         return true;
     }
 
+    /* ============================ REMOVE ============================= */
     public boolean remove(Student value) {
         int index = findNode(value);
         if (index >= 0) {
             data[index] = data[currentSize - 1];
             data[currentSize - 1] = null;
             currentSize--;
-            siftDown(index); // giữ nguyên cấu trúc, chỉ khác tiêu chí so sánh ở siftDown
+            siftDown(index);
             return true;
         } else {
             return false;
         }
     }
 
+    public int findNode(Student value) {
+        for (int i = 0; i < currentSize; i++) {
+            if (data[i].equals(value)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /* ============================ UPDATE ============================= */
     public boolean update(Student oldValue, Student newValue) {
         int index = findNode(oldValue);
         if (index < 0)
             return false;
-
         data[index] = newValue;
-
-        // min-heap: nếu nhỏ hơn cha thì đẩy lên, ngược lại đẩy xuống
         if (index > 0 && data[index].compareTo(data[(index - 1) / 2]) < 0) {
             siftUp(index);
         } else {
@@ -105,11 +119,57 @@ public class MinHeap {
         return true;
     }
 
+    /* ================================== DUYỆT================================== */
+    // PostOrder
+    public void postOrder() {
+        postOrder(0);
+    }
+
+    public void postOrder(int i) {
+        if (i >= currentSize) {
+            return;
+        }
+        postOrder(2 * i + 1);
+        postOrder(2 * i + 2);
+        System.out.println(data[i]);
+    }
+
+    // InOrder
+    public void inOrder() {
+        inOrder(0);
+    }
+
+    public void inOrder(int i) {
+        if (i >= currentSize) {
+            return;
+        }
+        inOrder(2 * i + 1);
+        System.out.println(data[i]);
+
+        inOrder(2 * i + 2);
+    }
+
+    // PreOrder
+    public void preOrder() {
+        preOrder(0);
+    }
+
+    public void preOrder(int i) {
+        if (i >= currentSize) {
+            return;
+        }
+        System.out.println(data[i]);
+        preOrder(2 * i + 1);
+        preOrder(2 * i + 2);
+    }
+
+    /*
+     * ============================ SiftUp vs SiftDown ============================
+     */
     public void siftUp(int index) {
         if (index == 0)
             return;
         int parantIndex = (index - 1) / 2;
-        // min-heap: cha phải <= con, nên nếu cha > con thì đổi chỗ
         if (data[parantIndex].compareTo(data[index]) > 0) {
             Student temp = data[index];
             data[index] = data[parantIndex];
@@ -140,15 +200,7 @@ public class MinHeap {
         }
     }
 
-    public int findNode(Student value) {
-        for (int i = 0; i < currentSize; i++) {
-            if (data[i].equals(value)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
+    /* ============================ PEEK vs POLL ============================= */
     public Student peek() {
         return currentSize == 0 ? null : data[0];
     }
@@ -161,9 +213,77 @@ public class MinHeap {
         return top;
     }
 
-    public void display() {
-        for (int i = 0; i < currentSize; i++) {
-            System.out.println(data[i]);
-        }
+    /* ============================ FIND MAX (PreOrder) =========================== */
+    public Student findMaxPreOrder() {
+        if (currentSize == 0)
+            return null;
+        return findMaxPreOrder(0);
     }
+
+    private Student findMaxPreOrder(int i) {
+        if (i >= currentSize)
+            return null;
+
+        Student max = data[i];
+
+        Student leftMax = findMaxPreOrder(2 * i + 1);
+        if (leftMax != null && leftMax.compareTo(max) > 0)
+            max = leftMax;
+
+        Student rightMax = findMaxPreOrder(2 * i + 2);
+        if (rightMax != null && rightMax.compareTo(max) > 0)
+            max = rightMax;
+
+        return max;
+    }
+
+    /* ============================ FIND MAX (InOrder) ============================ */
+    public Student findMaxInOrder() {
+        if (currentSize == 0)
+            return null;
+        return findMaxInOrder(0);
+    }
+
+    private Student findMaxInOrder(int i) {
+        if (i >= currentSize)
+            return null;
+
+        Student max = findMaxInOrder(2 * i + 1);
+        if (max == null)
+            max = data[i];
+        else if (data[i] != null && data[i].compareTo(max) > 0)
+            max = data[i];
+
+        Student rightMax = findMaxInOrder(2 * i + 2);
+        if (rightMax != null && rightMax.compareTo(max) > 0)
+            max = rightMax;
+
+        return max;
+    }
+
+    /* ============================ FIND MAX (PostOrder)============================ */
+    public Student findMaxPostOrder() {
+        if (currentSize == 0)
+            return null;
+        return findMaxPostOrder(0);
+    }
+
+    private Student findMaxPostOrder(int i) {
+        if (i >= currentSize)
+            return null;
+
+        Student leftMax = findMaxPostOrder(2 * i + 1);
+        Student rightMax = findMaxPostOrder(2 * i + 2);
+
+        Student max = null;
+        if (leftMax != null)
+            max = leftMax;
+        if (rightMax != null && (max == null || rightMax.compareTo(max) > 0))
+            max = rightMax;
+        if (max == null || (data[i] != null && data[i].compareTo(max) > 0))
+            max = data[i];
+
+        return max;
+    }
+
 }
