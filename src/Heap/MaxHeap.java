@@ -1,9 +1,13 @@
 package Heap;
 
 /**
- * Source này hiện tại đang dùng kiểu dữ liệu đói tượng Student, mọi người copy paste hãy thay đổi Student thành kiểu dữ liệu mà đề bài yêu cầu
- * Nhớ phải vào insert code để Implement equal vs hashCode, tự thêm getter vs setter nếu đề bài yêu cầu, 
- * Tìm hiểu thêm cách cài đặt hàm compareTo() vì ở đây compareTo() theo mẫu là so sánh gpa là kiểu double, tìm hiểu thêm cách so sánh theo Integer hay String
+ * Source này hiện tại đang dùng kiểu dữ liệu đói tượng Student, mọi người copy
+ * paste hãy thay đổi Student thành kiểu dữ liệu mà đề bài yêu cầu
+ * Nhớ phải vào insert code để Implement equal vs hashCode, tự thêm getter vs
+ * setter nếu đề bài yêu cầu,
+ * Tìm hiểu thêm cách cài đặt hàm compareTo() vì ở đây compareTo() theo mẫu là
+ * so sánh gpa là kiểu double, tìm hiểu thêm cách so sánh theo Integer hay
+ * String
  */
 class Student {
     private String ID;
@@ -68,7 +72,8 @@ public class MaxHeap {
         data = new Student[size];
     }
 
-    public boolean add(Student value) {
+    /* ============================ INSEART ============================= */
+    public boolean insert(Student value) {
         if (currentSize == maxSize)
             return false;
         data[currentSize] = value;
@@ -77,6 +82,7 @@ public class MaxHeap {
         return true;
     }
 
+    /* ============================ REMOVE ============================= */
     public boolean remove(Student value) {
         int index = findNode(value);
         if (index >= 0) {
@@ -90,6 +96,16 @@ public class MaxHeap {
         }
     }
 
+    public int findNode(Student value) {
+        for (int i = 0; i < currentSize; i++) {
+            if (data[i].equals(value)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /* ============================ UPDATE ============================= */
     public boolean update(Student oldValue, Student newValue) {
         int index = findNode(oldValue);
         if (index < 0)
@@ -105,6 +121,51 @@ public class MaxHeap {
         return true;
     }
 
+    /* ================================== DUYỆT================================== */
+    // PostOrder
+    public void postOrder() {
+        postOrder(0);
+    }
+
+    public void postOrder(int i) {
+        if (i >= currentSize) {
+            return;
+        }
+        postOrder(2 * i + 1);
+        postOrder(2 * i + 2);
+        System.out.println(data[i]);
+    }
+
+    // InOrder
+    public void inOrder() {
+        inOrder(0);
+    }
+
+    public void inOrder(int i) {
+        if (i >= currentSize) {
+            return;
+        }
+        inOrder(2 * i + 1);
+        System.out.println(data[i]);
+
+        inOrder(2 * i + 2);
+    }
+
+    // PreOrder
+    public void preOrder(){
+        preOrder(0);
+    }
+
+    public void preOrder(int i){
+        if(i >= currentSize){
+            return;
+        }
+        System.out.println(data[i]);
+        preOrder(2 * i + 1);
+        preOrder(2 * i + 2);
+    }
+
+    /* ============================ SiftUp vs SiftDown ============================  */
     public void siftUp(int index) {
         if (index == 0)
             return;
@@ -138,15 +199,7 @@ public class MaxHeap {
         }
     }
 
-    public int findNode(Student value) {
-        for (int i = 0; i < currentSize; i++) {
-            if (data[i].equals(value)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
+    /* ============================ PEEK vs POLL ============================= */
     public Student peek() {
         return currentSize == 0 ? null : data[0];
     }
@@ -157,24 +210,6 @@ public class MaxHeap {
         Student top = data[0];
         remove(top);
         return top;
-    }
-
-    public void display() {
-        for (int i = 0; i < currentSize; i++) {
-            System.out.println(data[i]);
-        }
-    }
-
-    public static void main(String[] args) {
-        MaxHeap heap = new MaxHeap(10);
-        heap.add(new Student("1", "Thanh", 3.5));
-        heap.add(new Student("2", "Hoang", 3.2));
-        heap.add(new Student("3", "Anh", 2.1));
-        heap.add(new Student("4", "Bao", 2.8));
-        heap.add(new Student("5", "Tung", 2.0));
-        heap.remove(new Student("2", null, 0));
-        heap.display();
-
     }
 
 }

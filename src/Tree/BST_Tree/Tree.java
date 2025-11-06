@@ -4,8 +4,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Source này hiện tại đang dùng kiểu dữ liệu đói tượng Student, mọi người copy paste hãy thay đổi Student thành kiểu dữ liệu mà đề bài yêu cầu
- * Tìm hiểu thêm cách cài đặt hàm compareTo() vì ở đây compareTo() theo mẫu là so sánh gpa là kiểu double, tìm hiểu thêm cách so sánh theo Integer hay String
+ * Source này hiện tại đang dùng kiểu dữ liệu đói tượng Student, mọi người copy
+ * paste hãy thay đổi Student thành kiểu dữ liệu mà đề bài yêu cầu
+ * Tìm hiểu thêm cách cài đặt hàm compareTo() vì ở đây compareTo() theo mẫu là
+ * so sánh gpa là kiểu double, tìm hiểu thêm cách so sánh theo Integer hay
+ * String
  */
 
 class Student {
@@ -20,8 +23,10 @@ class Student {
     }
 
     public int compareTo(Student o) {
-        if (this.gpa > o.gpa) return 1;
-        else if (this.gpa < o.gpa) return -1;
+        if (this.gpa > o.gpa)
+            return 1;
+        else if (this.gpa < o.gpa)
+            return -1;
         return 0;
     }
 
@@ -30,12 +35,29 @@ class Student {
         return "Student [ID=" + ID + ", name=" + name + ", gpa=" + gpa + "]";
     }
 
-    public String getID() { return ID; }
-    public void setID(String iD) { ID = iD; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public double getGpa() { return gpa; }
-    public void setGpa(double gpa) { this.gpa = gpa; }
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String iD) {
+        ID = iD;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getGpa() {
+        return gpa;
+    }
+
+    public void setGpa(double gpa) {
+        this.gpa = gpa;
+    }
 }
 
 class Node {
@@ -67,9 +89,9 @@ class BST {
             return new Node(value);
         }
         int cmp = r.data.compareTo(value);
-        if (cmp > 0) {                
+        if (cmp > 0) {
             r.left = insert(r.left, value);
-        } else if (cmp < 0) {          
+        } else if (cmp < 0) {
             r.right = insert(r.right, value);
         }
         return r;
@@ -77,7 +99,10 @@ class BST {
 
     /* ============== DUYỆT CÂY ============== */
     // InOrder
-    public void inOrder() { inOrderRec(root); }
+    public void inOrder() {
+        inOrderRec(root);
+    }
+
     public void inOrderRec(Node r) {
         if (r != null) {
             inOrderRec(r.left);
@@ -87,7 +112,10 @@ class BST {
     }
 
     // PreOrder
-    public void preOrder() { preOrderRec(root); }
+    public void preOrder() {
+        preOrderRec(root);
+    }
+
     public void preOrderRec(Node r) {
         if (r != null) {
             System.out.print(r.data + " ");
@@ -95,8 +123,12 @@ class BST {
             preOrderRec(r.right);
         }
     }
+
     // PostOrder
-    public void postOrder() { postOrderRec(root); }
+    public void postOrder() {
+        postOrderRec(root);
+    }
+
     public void postOrderRec(Node r) {
         if (r != null) {
             postOrderRec(r.left);
@@ -105,9 +137,11 @@ class BST {
         }
     }
 
-    // BFS -- Cách duyệt này cần import Queue vs LinkedList, nếu đề bài ko cho phép dùng hàm có sẵn có thể dùng Queue vs LinkedList trong Source
+    // BFS -- Cách duyệt này cần import Queue vs LinkedList, nếu đề bài ko cho phép
+    // dùng hàm có sẵn có thể dùng Queue vs LinkedList trong Source
     public void BFS() {
-        if (root == null) return;
+        if (root == null)
+            return;
 
         Queue<Node> queue = new LinkedList<>();
         queue.add(root);
@@ -116,24 +150,80 @@ class BST {
             Node curNode = queue.poll();
             System.out.println(curNode.data);
 
-            if (curNode.left != null) queue.add(curNode.left);
-            if (curNode.right != null) queue.add(curNode.right);
+            if (curNode.left != null)
+                queue.add(curNode.left);
+            if (curNode.right != null)
+                queue.add(curNode.right);
         }
     }
 
-    /* ============== SEARCH ============== */
-
-    public boolean search(Student value) {  
-        return search(root, value);
+    /* ================ SEARCH ================ */
+    /*
+     * Các hàm search bằng 3 cách duyệt, tùy đề bài mà sử dụng, đề bài có thể nói
+     * tìm kiếm theo ID hoặc name hoặc ...
+     */
+    /* Search Theo InOrder */
+    public Node searchByNameInOrder(String name) {
+        return searchByNameInOrder(root, name);
     }
 
-    public boolean search(Node root, Student value) {
-        if (root == null) return false;
+    private Node searchByNameInOrder(Node node, String name) {
+        if (node == null)
+            return null;
 
-        int cmp = root.data.compareTo(value);
-        if (cmp == 0) return true;
-        else if (cmp < 0) return search(root.right, value);
-        else return search(root.left, value);
+        Node left = searchByNameInOrder(node.left, name);
+        if (left != null)
+            return left;
+
+        if (node.data.getName().equalsIgnoreCase(name)) {
+            return node;
+        }
+
+        return searchByNameInOrder(node.right, name);
+    }
+
+    /* Search Theo PreOrder */
+    public Node searchByNamePreOrder(String name) {
+        return searchByNamePreOrder(root, name);
+    }
+
+    private Node searchByNamePreOrder(Node node, String name) {
+        if (node == null)
+            return null;
+
+        if (node.data.getName().equalsIgnoreCase(name)) {
+            return node;
+        }
+
+        Node left = searchByNamePreOrder(node.left, name);
+        if (left != null)
+            return left;
+
+        return searchByNamePreOrder(node.right, name);
+    }
+
+    /* Search Theo PostOrder */
+    public Node searchByNamePostOrder(String name) {
+        return searchByNamePostOrder(root, name);
+    }
+
+    private Node searchByNamePostOrder(Node node, String name) {
+        if (node == null)
+            return null;
+
+        Node left = searchByNamePostOrder(node.left, name);
+        if (left != null)
+            return left;
+
+        Node right = searchByNamePostOrder(node.right, name);
+        if (right != null)
+            return right;
+
+        if (node.data.getName().equalsIgnoreCase(name)) {
+            return node;
+        }
+
+        return null;
     }
 
     /* ============== REMOVE ============== */
@@ -143,7 +233,8 @@ class BST {
     }
 
     public Node remove(Node root, Student value) {
-        if (root == null) return null;
+        if (root == null)
+            return null;
 
         int cmp = root.data.compareTo(value);
         if (cmp > 0) {
@@ -175,17 +266,26 @@ class BST {
     }
 
     /* ============== ĐẾM SỐ NODE ============== */
-    public int countNode() { return countNode(root); }
+    public int countNode() {
+        return countNode(root);
+    }
+
     public int countNode(Node root) {
-        if (root == null) return 0;
+        if (root == null)
+            return 0;
         return 1 + countNode(root.left) + countNode(root.right);
     }
 
     /* ============== ĐẾM SỐ LÁ ============== */
-    public int countLeafNodes() { return countLeafNodes(root); }
+    public int countLeafNodes() {
+        return countLeafNodes(root);
+    }
+
     public int countLeafNodes(Node root) {
-        if (root == null) return 0;
-        if (root.left == null && root.right == null) return 1;
+        if (root == null)
+            return 0;
+        if (root.left == null && root.right == null)
+            return 1;
         return countLeafNodes(root.left) + countLeafNodes(root.right);
     }
 }
@@ -193,20 +293,6 @@ class BST {
 public class Tree {
     public static void main(String[] args) {
         // Ví dụ dùng:
-        BST bst = new BST();
-        bst.insert(new Student("1","Alice",3.2));
-        bst.insert(new Student("2","Bob",2.5));
-        bst.insert(new Student("3","Charlie",3.9));
-        bst.insert(new Student("4","David",3.6));
-
-        System.out.println("InOrder:");
-        bst.inOrder();
-
-        System.out.println("Search GPA=3.6:");
-        System.out.println(bst.search(new Student("", "", 3.6)));
-
-        System.out.println("Remove GPA=3.2:");
-        bst.remove(new Student("", "", 3.2));
-        bst.inOrder();
+        
     }
 }
